@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const port = 3000;
-const fs = require('fs'); // Import the 'fs' module to work with file system operations
+const fs = require('fs'); 
 
 app.use('/', express.static('public'));
 
