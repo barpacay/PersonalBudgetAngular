@@ -5,6 +5,22 @@ const fs = require('fs');
 
 app.use('/', express.static('public'));
 
+const budget = {
+    myBudget:[
+    {
+        title: 'Eat out',
+        budget: 30
+    },
+    {
+        title: 'Rent',
+        budget: 350
+    },
+    {
+        title: 'Groceries',
+        budget: 90
+    },
+]};
+
 let budgetData = null;
 
 fs.readFile('budgetData.json', 'utf8', (err, data) => {
@@ -32,6 +48,8 @@ fs.readFile('budgetData.json', 'utf8', (err, data) => {
     console.log(`Example app listening at http://localhost:${port}`);
   });
 });
+
+
 
 
 
