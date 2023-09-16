@@ -1,37 +1,37 @@
 const express = require('express');
-const { title } = require('process');
 const app = express();
 const port = 3000;
+const fs = require('fs'); // Import the 'fs' module to work with file system operations
 
-app.use('/',express.static('public'));
+app.use('/', express.static('public'));
 
-const budget = {
-    myBudget:[
-    {
-        title: 'Eat out',
-        budget: 30
-    },
-    {
-        title: 'Rent',
-        budget: 350
-    },
-    {
-        title: 'Groceries',
-        budget: 90
-    },
-]};
+let budgetData = null;
 
+fs.readFile('budgetData.json', 'utf8', (err, data) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
 
-app.get('/hello', (req, res) =>{
-    res.send('Hello World!')
+  budgetData = JSON.parse(data); // Parse the data and store it in the 'budgetData' variable
+
+  app.get('/hello', (req, res) => {
+    res.send('Hello World!');
+  });
+
+  app.get('/budget', (req, res) => {
+    // Check if budgetData has been loaded from the file
+    if (budgetData) {
+      res.json(budgetData);
+    } else {
+      res.status(500).json({ error: 'Budget data not available' });
+    }
+  });
+
+  app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`);
+  });
 });
 
-app.get('/budget', (req, res) =>{
-    res.json(budget);
-});
-
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
-});
 
 
