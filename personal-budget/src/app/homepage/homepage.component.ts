@@ -1,6 +1,7 @@
 import { AfterViewInit, Component  } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Chart } from 'chart.js';
+import * as d3 from 'd3';
 
 @Component({
   selector: 'pb-homepage',
@@ -26,12 +27,18 @@ export class HomepageComponent implements AfterViewInit {
         'Groceries',
     ]
 };
+private data: any[] = [
+  { Stars: 5, Framework: 'Eat out' },
+  { Stars: 4, Framework: 'Rent' },
+  { Stars: 3, Framework: 'Groceries' }
+];
+
   private svg: any;
   private margin = 50;
   private width = 750;
   private height = 600;
   private radius = Math.min(this.width, this.height) / 2 - this.margin;
-  private colors;
+  private colors : any;
 
   private createSvg(): void {
     this.svg = d3.select("figure#pie")
@@ -47,8 +54,8 @@ export class HomepageComponent implements AfterViewInit {
 
   private createColors(): void {
     this.colors = d3.scaleOrdinal()
-    .domain(this.data.map(d => d.Stars.toString()))
-    .range(["#c7d3ec", "#a5b8db", "#879cc4", "#677795", "#5a6782"]);
+    .domain(this.data.map((d:any) => d.Stars.toString()))
+    .range(["#ffcd56", "#ff6384","#36a2eb","#fd6b19"]);
   }
 
   private drawChart(): void {
@@ -84,7 +91,6 @@ export class HomepageComponent implements AfterViewInit {
   }
   constructor(private http: HttpClient) {}
 
-
   ngAfterViewInit(): void {
     this.http.get('http://localhost:3000/budget').subscribe((res:any) => {
     for(var i=0;i<res.myBudget.length;i++){
@@ -98,10 +104,9 @@ export class HomepageComponent implements AfterViewInit {
   });
 }
   createChart(){
-      var ctx = document.getElementById('myChart');
-      //.getContext('2d');
-     // var canvas = < HTMLCanvasElement> document.getElementById('myChart');
-      //var ctx = canvas.getContext('2d');
+      var ctx = document.getElementById('myChart') as HTMLCanvasElement;
+     //var ctx = document.getElementById('myChart');
+     // var ctx = canvas.getContext('2d');
       var myPieChart = new Chart(ctx,{
           type:'pie',
           data:this.dataSource,
